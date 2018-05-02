@@ -174,3 +174,7 @@ function nextPrompt() {
 
 main();
 
+module.exports = {
+    con
+};
+
