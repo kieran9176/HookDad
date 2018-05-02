@@ -1,11 +1,11 @@
 'use strict';
-require('dotenv').config();
 const readline = require('readline');
 const mysql = require('mysql');
+const pwd = require('../secrets');
 
-// const { getLowHighScoreId, getAllRunsAvg,
-//     getAvgFromTable, uniqueIdQuery,
-//     dateRangeQuery } = require('../schema/query');
+const { viewProductTypesQuery, viewProductsQuery, viewStockCountQuery,
+        addInventoryQuery, addLineItemQuery, viewCustomerPurchasesQuery,
+        viewAllSuppliersQuery, viewSingleSupplierQuery } = require('./db');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -15,22 +15,21 @@ const rl = readline.createInterface({
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: process.env.DBPASSWORD,
+    password: pwd,
     database: "mydb"
 });
 
 con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
 });
 
 let employeeCommandsType = null;
 
 const stockerCommands = [
-    { number: '1', command: "1: view all product types", action: getProductTypes },
+    { number: '1', command: "1: view all product types", action: viewProductTypes },
     { number: '2', command: "2: view all products", action: viewAllProducts },
-    { number: '3', command: "3: retrieve stock count for specific product", action: stockCount },
-    { number: '4', command: "4: stock the shelf with a given product and quantity", action: stockShelf },
+    { number: '3', command: "3: retrieve stock count for specific product", action: viewStockCount },
+    { number: '4', command: "4: stock the shelf with a given product and quantity", action: editInventory },
     { number: '5', command: "5: close the program", action: close },
 ];
 
@@ -47,10 +46,10 @@ const supplyManagerCommands = [
 ];
 
 const storeManagerCommands = [
-    { number: '1', command: "1: view all product types", action: getProductTypes },
+    { number: '1', command: "1: view all product types", action: viewProductTypes },
     { number: '2', command: "2: view all products", action: viewAllProducts },
-    { number: '3', command: "3: retrieve stock count for specific product", action: stockCount },
-    { number: '4', command: "4: stock the shelf with a given product and quantity", action: stockShelf },
+    { number: '3', command: "3: retrieve stock count for specific product", action: viewStockCount },
+    { number: '4', command: "4: stock the shelf with a product and quantity", action: editInventory },
     { number: '5', command: "5: add line item to purchase", action: addLineItemToPurchase },
     { number: '6', command: "6: view customer purchases", action: viewCustomerPurchases },
     { number: '7', command: "7: view information for all suppliers", action: viewAllSuppliers },
@@ -108,43 +107,43 @@ function displayOptionsAndRespondAccordingly (employeeCommandsType) {
     });
 }
 
-function getProductTypes () {
-    //
+function viewProductTypes () {
+    viewProductTypesQuery(con);
     nextPrompt();
 }
 
 function viewAllProducts () {
-    //
+    viewProductsQuery(con);
     nextPrompt();
 }
 
-function stockCount () {
-    //
+function viewStockCount () {
+    // viewStockCountQuery(con);
     nextPrompt();
 }
 
-function stockShelf () {
-    //
+function editInventory () {
+    // addInventoryQuery(con, productType, quantity);
     nextPrompt();
 }
 
 function addLineItemToPurchase () {
-    //
+    // addLineItemQuery(con, product, quantity, price);
     nextPrompt();
 }
 
 function viewCustomerPurchases () {
-    //
+    // viewCustomerPurchasesQuery(con, customerName);
     nextPrompt();
 }
 
 function viewAllSuppliers () {
-    //
+    // viewAllSuppliersQuery(con)
     nextPrompt();
 }
 
 function viewSingleSupplier () {
-    //
+    // viewSingleSupplierQuery(con, supplierName);
     nextPrompt();
 }
 
@@ -161,6 +160,11 @@ function nextPrompt() {
             switch (answer) {
                 case '0':
                     employeeCommandsType.forEach(command => console.log("-", command['command']));
+                    rl.question('', (answer) => {
+                        employeeCommandsType.forEach(command => {
+                            if (answer === command['number']) command['action']();
+                        })
+                    });
                     break;
                 default:
                     employeeCommandsType.forEach(command => {
@@ -173,8 +177,4 @@ function nextPrompt() {
 }
 
 main();
-
-module.exports = {
-    con
-};
 
