@@ -1,0 +1,19 @@
+{
+  "name": "cscfinalproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kieran9176/HookDad.git"
+  },
+  "author": "Kieran Derfus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kieran9176/HookDad/issues"
+  },
+  "homepage": "https://github.com/kieran9176/HookDad#readme"
+}
