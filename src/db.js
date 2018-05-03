@@ -15,7 +15,7 @@ function viewProductsQuery (dbConnection) {
 }
 
 function viewStockCountQuery (dbConnection) {
-    const viewStockCountSQL = "";
+    const viewStockCountSQL = "SELECT * FROM mydb.Product;";
     dbConnection.query(viewStockCountSQL, function (err, result) {
         if (err) throw err;
         console.log(result);
@@ -39,7 +39,23 @@ function addLineItemQuery (dbConnection, product, quantity, price) {
 }
 
 function viewCustomerPurchasesQuery (dbConnection, customerName) {
-    const viewCustomerPurchasesSQL = "";
+    const viewCustomerPurchasesSQL =
+        "SELECT \n" +
+        "    *\n" +
+        "FROM\n" +
+        "    mydb.LineItem\n" +
+        "WHERE\n" +
+        "    Purchase_id = (SELECT \n" +
+        "            id\n" +
+        "        FROM\n" +
+        "            mydb.Purchase\n" +
+        "        WHERE\n" +
+        "            Customer_id = (SELECT \n" +
+        "                    id\n" +
+        "                FROM\n" +
+        "                    mydb.Customer\n" +
+        "                WHERE\n" +
+        `                    Name = '${customerName}'));`;
     dbConnection.query(viewCustomerPurchasesSQL, function (err, result) {
         if (err) throw err;
         console.log(result);
