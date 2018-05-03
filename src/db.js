@@ -105,9 +105,3 @@ function viewProductTypeSupplierQuery (dbConnection, productType) {
 module.exports = {  viewProductTypesQuery, viewProductsQuery, viewStockCountQuery,
                     viewRecordOfRegisterQuery, addInventoryQuery, addLineItemQuery, viewCustomerPurchasesQuery,
                     viewAllSuppliersQuery, viewSingleSupplierQuery, viewProductTypeSupplierQuery  };
-
-
-
-
-
-
