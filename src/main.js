@@ -140,13 +140,15 @@ function viewCustomerPurchases() {
 }
 
 function viewAllSuppliers () {
-    // viewAllSuppliersQuery(con)
+    viewAllSuppliersQuery(con);
     nextPrompt();
 }
 
 function viewSingleSupplier () {
-    // viewSingleSupplierQuery(con, supplierName);
-    nextPrompt();
+    rl.question('Which supplier\'s information would you like to view? \n', (answer) => {
+        viewSingleSupplierQuery(con, answer);
+        nextPrompt();
+    });
 }
 
 function close () {
