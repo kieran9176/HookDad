@@ -63,7 +63,7 @@ function viewCustomerPurchasesQuery (dbConnection, customerName) {
 }
 
 function viewAllSuppliersQuery (dbConnection) {
-    const viewAllSuppliersSQL = "";
+    const viewAllSuppliersSQL = "SELECT * FROM mydb.Supplier;";
     dbConnection.query(viewAllSuppliersSQL, function (err, result) {
         if (err) throw err;
         console.log(result);
@@ -71,7 +71,8 @@ function viewAllSuppliersQuery (dbConnection) {
 }
 
 function viewSingleSupplierQuery (dbConnection, supplierName) {
-    const viewSingleSupplierSQL = "";
+    const viewSingleSupplierSQL = "SELECT * FROM mydb.Supplier\n" +
+        `WHERE NAME='${supplierName}';`;
     dbConnection.query(viewSingleSupplierSQL, function (err, result) {
         if (err) throw err;
         console.log(result);
