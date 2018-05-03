@@ -4,8 +4,10 @@ const mysql = require('mysql');
 const pwd = require('../secrets');
 
 const { viewProductTypesQuery, viewProductsQuery, viewStockCountQuery,
-        addInventoryQuery, addLineItemQuery, viewCustomerPurchasesQuery,
-        viewAllSuppliersQuery, viewSingleSupplierQuery } = require('./db');
+        viewRecordOfRegisterQuery, addInventoryQuery, addLineItemQuery,
+        viewCustomerPurchasesQuery, viewAllSuppliersQuery, viewSingleSupplierQuery,
+        viewProductTypeSupplierQuery
+        } = require('./db');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -36,13 +38,15 @@ const stockerCommands = [
 const cashierCommands = [
     { number: '1', command: "1: add line item to purchase", action: addLineItemToPurchase },
     { number: '2', command: "2: view customer purchases", action: viewCustomerPurchases },
-    { number: '3', command: "3: close the program", action: close },
+    { number: '3', command: "3: view record of purchases on a specific register", action: viewRecordOfRegister },
+    { number: '4', command: "4: close the program", action: close },
 ];
 
 const supplyManagerCommands = [
     { number: '1', command: "1: view information for all suppliers", action: viewAllSuppliers },
     { number: '2', command: "2: view information for specific supplier", action: viewSingleSupplier },
-    { number: '3', command: "3: close the program", action: close },
+    { number: '3', command: "3: view supplier of a specific product type", action: viewProductTypeSupplier },
+    { number: '4', command: "4: close the program", action: close },
 ];
 
 const storeManagerCommands = [
@@ -50,11 +54,12 @@ const storeManagerCommands = [
     { number: '2', command: "2: view all products", action: viewAllProducts },
     { number: '3', command: "3: retrieve stock count for specific product", action: viewStockCount },
     { number: '4', command: "4: stock the shelf with a product and quantity", action: editInventory },
-    { number: '5', command: "5: add line item to purchase", action: addLineItemToPurchase },
+    { number: '5', command: "5: view record of purchases on a specific register", action: viewRecordOfRegister },
     { number: '6', command: "6: view customer purchases", action: viewCustomerPurchases },
     { number: '7', command: "7: view information for all suppliers", action: viewAllSuppliers },
     { number: '8', command: "8: view information for specific supplier", action: viewSingleSupplier },
-    { number: '9', command: "9: close the program", action: close },
+    { number: '9', command: "9: view supplier of a specific product type", action: viewProductTypeSupplier },
+    { number: '10', command: "10: close the program", action: close },
 ];
 
 function main () {
@@ -122,6 +127,13 @@ function viewStockCount () {
     nextPrompt();
 }
 
+function viewRecordOfRegister () {
+    rl.question('Which register\'s records would you like to view? \n', (answer) => {
+        viewRecordOfRegisterQuery(con, answer);
+        nextPrompt();
+    });
+}
+
 function editInventory () {
     // addInventoryQuery(con, productType, quantity);
     nextPrompt();
@@ -147,6 +159,13 @@ function viewAllSuppliers () {
 function viewSingleSupplier () {
     rl.question('Which supplier\'s information would you like to view? \n', (answer) => {
         viewSingleSupplierQuery(con, answer);
+        nextPrompt();
+    });
+}
+
+function viewProductTypeSupplier () {
+    rl.question('For which product type would you like to see the supplier? \n', (answer) => {
+        viewProductTypeSupplierQuery(con, answer);
         nextPrompt();
     });
 }
