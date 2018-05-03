@@ -118,7 +118,7 @@ function viewAllProducts () {
 }
 
 function viewStockCount () {
-    // viewStockCountQuery(con);
+    viewStockCountQuery(con);
     nextPrompt();
 }
 
@@ -132,9 +132,11 @@ function addLineItemToPurchase () {
     nextPrompt();
 }
 
-function viewCustomerPurchases () {
-    // viewCustomerPurchasesQuery(con, customerName);
-    nextPrompt();
+function viewCustomerPurchases() {
+    rl.question('Which customer\'s purchases would you like to view? \n', (answer) => {
+        viewCustomerPurchasesQuery(con, answer);
+        nextPrompt();
+    });
 }
 
 function viewAllSuppliers () {
