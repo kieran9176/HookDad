@@ -41,9 +41,9 @@ function addLineItemQuery (dbConnection, product, quantity, price) {
 function viewCustomerPurchasesQuery (dbConnection, customerName) {
     const viewCustomerPurchasesSQL =
         "SELECT \n" +
-        "    *\n" +
+        "    Name, Quantity, Price\n" +
         "FROM\n" +
-        "    mydb.LineItem\n" +
+        "    mydb.LineItem NATURAL JOIN mydb.Product\n" +
         "WHERE\n" +
         "    Purchase_id = (SELECT \n" +
         "            id\n" +
